@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct MeetingView: View {
+    
+//    let scrum: DailyScrum
+    
     var body: some View {
         VStack {
             // MARK: Header
