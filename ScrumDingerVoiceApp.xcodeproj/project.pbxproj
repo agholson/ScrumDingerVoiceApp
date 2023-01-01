@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		751DC2A6295A8C730084A75A /* DetailEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751DC2A5295A8C730084A75A /* DetailEditView.swift */; };
 		753D651D295A05DB00C2DA3D /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753D651C295A05DB00C2DA3D /* DetailView.swift */; };
 		75CA96BC2957451E00FA0AE0 /* ScrumDingerVoiceAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CA96BB2957451E00FA0AE0 /* ScrumDingerVoiceAppApp.swift */; };
 		75CA96BE2957451E00FA0AE0 /* MeetingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CA96BD2957451E00FA0AE0 /* MeetingView.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		751DC2A4295A8A3F0084A75A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		751DC2A5295A8C730084A75A /* DetailEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailEditView.swift; sourceTree = "<group>"; };
 		753D651C295A05DB00C2DA3D /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		75CA96B82957451E00FA0AE0 /* ScrumDingerVoiceApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumDingerVoiceApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CA96BB2957451E00FA0AE0 /* ScrumDingerVoiceAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrumDingerVoiceAppApp.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				75CA96CF2957BAF000FA0AE0 /* CardView.swift */,
 				753D651C295A05DB00C2DA3D /* DetailView.swift */,
 				75CA96BD2957451E00FA0AE0 /* MeetingView.swift */,
+				751DC2A5295A8C730084A75A /* DetailEditView.swift */,
 				753D651B2959FF2000C2DA3D /* Helpers */,
 			);
 			path = Views;
@@ -183,6 +186,7 @@
 			files = (
 				75CA96CD2957BA4100FA0AE0 /* DailyScrum.swift in Sources */,
 				753D651D295A05DB00C2DA3D /* DetailView.swift in Sources */,
+				751DC2A6295A8C730084A75A /* DetailEditView.swift in Sources */,
 				75CA96D2295899BC00FA0AE0 /* TrailingIconLabelStyle.swift in Sources */,
 				75CA96CB2957612500FA0AE0 /* Theme.swift in Sources */,
 				75CA96D429589FDF00FA0AE0 /* ScrumsView.swift in Sources */,
