@@ -16,19 +16,24 @@ struct DetailEditView: View {
         Form {
             // MARK: Meeting Title
             Section {
-                TextField("Title", text: $data.title)
                 
-                HStack {
-                    Slider(value: $data.lengthInMinutes, in: 5...30, step: 1) {
-                        Text("Length") // VoiceOver uses it for accessibility purposes
+                    TextField("Title", text: $data.title)
+                    
+                    HStack {
+                        Slider(value: $data.lengthInMinutes, in: 5...30, step: 1) {
+                            Text("Length") // VoiceOver uses it for accessibility purposes
+                        }
+                        .accessibilityValue("\(Int(data.lengthInMinutes))")
+                        
+                        Text("\(Int(data.lengthInMinutes)) minutes")
                     }
-                    .accessibilityValue("\(Int(data.lengthInMinutes))")
-                                        
-                    Text("\(Int(data.lengthInMinutes)) minutes")
-                }
                 
                 // MARK: Theme Picker
-                ThemePicker(selection: $data.theme)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 4)
+                        .foregroundColor(data.theme.mainColor)
+                    ThemePicker(selection: $data.theme)
+                }
                 
             } header: {
                 Text("Meeting Info")
