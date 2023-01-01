@@ -41,6 +41,14 @@ extension DailyScrum {
     var data: Data {
         Data(title: title, attendees: attendees, lengthInMinutes: Double(lengthInMinutes), theme: theme)
     }
+    
+    // Updates self based on the passed-in data 
+    mutating func update(from data: Data) {
+        self.title  = data.title
+        self.attendees = data.attendees
+        self.lengthInMinutes = Int(data.lengthInMinutes)
+        self.theme = data.theme
+    }
 }
 
 extension DailyScrum {

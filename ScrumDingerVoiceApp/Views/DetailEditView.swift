@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct DetailEditView: View {
-    @State private var data = DailyScrum.Data()
+    @Binding var data: DailyScrum.Data
     
     @State private var newAttendeeName = ""
     
     var body: some View {
         Form {
-            // MARK: Edit Title
+            // MARK: Meeting Title
             Section {
                 TextField("Title", text: $data.title)
                 
@@ -22,10 +22,13 @@ struct DetailEditView: View {
                     Slider(value: $data.lengthInMinutes, in: 5...30, step: 1) {
                         Text("Length") // VoiceOver uses it for accessibility purposes
                     }
-                    .accessibilityValue("\(Int(data.lengthInMinutes)) minutes")
-                    
+                    .accessibilityValue("\(Int(data.lengthInMinutes))")
+                                        
                     Text("\(Int(data.lengthInMinutes)) minutes")
                 }
+                
+                // MARK: Theme Picker
+                ThemePicker(selection: $data.theme)
                 
             } header: {
                 Text("Meeting Info")
@@ -67,6 +70,6 @@ struct DetailEditView: View {
 
 struct DetailEditView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailEditView()
+        DetailEditView(data: .constant(DailyScrum.sampleData[0].data))
     }
 }
