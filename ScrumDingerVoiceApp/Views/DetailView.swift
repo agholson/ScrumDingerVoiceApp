@@ -18,7 +18,7 @@ struct DetailView: View {
         List {
             Section {
                 NavigationLink {
-                    MeetingView()
+                    MeetingView(scrum: $scrum)
                 } label: {
                     Label("Start Meeting", systemImage: "clock")
                         .font(.headline)
@@ -41,7 +41,6 @@ struct DetailView: View {
                     
                 }
                 .accessibilityElement(children: .combine)  // Reads Theme Yellow
-                
                 
             } header: {
                 Text("Meeting Info")
