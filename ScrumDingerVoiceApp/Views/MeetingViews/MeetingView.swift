@@ -63,6 +63,9 @@ struct MeetingView: View {
         .onDisappear(perform: {
             // Stop the timer
             scrumTimer.stopScrum()
+            // MARK: Save Meeting info to History
+            let newHistory = History(attendees: scrum.attendees, lengthInMinutes: scrum.timer.secondsElapsed / 60)
+            scrum.history.insert(newHistory, at: 0) // Appends to the first element in the list
         })
         .navigationBarTitleDisplayMode(.inline)
         

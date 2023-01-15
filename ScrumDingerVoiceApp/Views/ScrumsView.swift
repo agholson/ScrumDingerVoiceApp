@@ -11,6 +11,12 @@ struct ScrumsView: View {
     
     @Binding var scrums: [DailyScrum]
     
+    // Used to display the new Scrum view
+    @State private var isPresentingNewScrumView = false
+    
+    // Tracks the new Scrum data
+    @State private var newScrumData = DailyScrum.Data()
+    
     var body: some View {
         List {
             ForEach($scrums, id: \.id) { $scrum in
@@ -21,16 +27,47 @@ struct ScrumsView: View {
             }
         }
         .navigationTitle("Daily Scrums")
+        // MARK: Top-Right Plus Meeting Button
         .toolbar {
-            
             Button(action: {
-                
+                isPresentingNewScrumView = true
                 
             }) {
                 Image(systemName: "plus")
             }
             .accessibilityLabel("New Scrum")
         }
+        // MARK: - Display new Scrum View
+        .sheet(isPresented: $isPresentingNewScrumView, onDismiss: {
+            // Reinitializes the scrum to a blank data set, upon dismissal of this sheet
+            newScrumData = DailyScrum.Data()
+        }) {
+            NavigationView {
+                DetailEditView(data: $newScrumData)
+                    .toolbar {
+                        // Dismiss Button
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Dismiss") {
+                                isPresentingNewScrumView = false
+                            }
+                        }
+                        
+                        // MARK: Create new Scrum
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Add") {
+                                isPresentingNewScrumView = false
+                                // Assign the data from this view to the state data
+                                let newScrum = DailyScrum(data: newScrumData)
+                                
+                                // Add it to the array, which tracks all of the scrums
+                                scrums.append(newScrum)
+                                
+                            }
+                        }
+                    }
+            }
+        }
+        
     }
 }
 

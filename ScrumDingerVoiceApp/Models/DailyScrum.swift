@@ -14,14 +14,15 @@ struct DailyScrum {
     var attendees: [Attendee]
     var lengthInMinutes: Int
     var theme: Theme
+    var history: [History] = [] 
     
     init(id: UUID = UUID(), title: String, attendees: [String], lengthInMinutes: Int, theme: Theme) {
-           self.id = id
-           self.title = title
-           self.attendees = attendees.map { Attendee(name: $0) }
-           self.lengthInMinutes = lengthInMinutes
-           self.theme = theme
-       }
+        self.id = id
+        self.title = title
+        self.attendees = attendees.map { Attendee(name: $0) }
+        self.lengthInMinutes = lengthInMinutes
+        self.theme = theme
+    }
 }
 
 extension DailyScrum {
@@ -42,12 +43,21 @@ extension DailyScrum {
         Data(title: title, attendees: attendees, lengthInMinutes: Double(lengthInMinutes), theme: theme)
     }
     
-    // Updates self based on the passed-in data 
+    /// Updates self based on the passed-in data, which allows it to remain as a struct
     mutating func update(from data: Data) {
         self.title  = data.title
         self.attendees = data.attendees
         self.lengthInMinutes = Int(data.lengthInMinutes)
         self.theme = data.theme
+    }
+    
+    /// Initializer, which accepts data as a parameter
+    init(data: Data) {
+        id = UUID()
+        title = data.title
+        attendees = data.attendees
+        lengthInMinutes = Int(data.lengthInMinutes)
+        theme = data.theme
     }
 }
 
