@@ -8,13 +8,14 @@
 import SwiftUI
 
 
-struct DailyScrum {
+/// Codable allows the easy serialize data to/ from JSON.
+struct DailyScrum: Codable {
     let id: UUID
     var title: String
     var attendees: [Attendee]
     var lengthInMinutes: Int
     var theme: Theme
-    var history: [History] = [] 
+    var history: [History] = []
     
     init(id: UUID = UUID(), title: String, attendees: [String], lengthInMinutes: Int, theme: Theme) {
         self.id = id
@@ -26,10 +27,16 @@ struct DailyScrum {
 }
 
 extension DailyScrum {
-    struct Attendee: Identifiable {
-        let id: UUID = UUID()
+    struct Attendee: Identifiable, Codable {
+        let id: UUID
         var name: String
+        
+        init(id: UUID = UUID(), name: String) {
+            self.id = id
+            self.name = name
+        }
     }
+    
     
     struct Data {
         var title: String = ""

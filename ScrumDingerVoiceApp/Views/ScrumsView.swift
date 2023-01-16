@@ -11,11 +11,17 @@ struct ScrumsView: View {
     
     @Binding var scrums: [DailyScrum]
     
+    // Tracks the current state of the app
+    @Environment(\.scenePhase) private var scenePhase
+    
     // Used to display the new Scrum view
     @State private var isPresentingNewScrumView = false
     
     // Tracks the new Scrum data
     @State private var newScrumData = DailyScrum.Data()
+    
+    // Closure used to save the data
+    let saveAction: ()->Void
     
     var body: some View {
         List {
@@ -67,12 +73,15 @@ struct ScrumsView: View {
                     }
             }
         }
-        
+        .onChange(of: scenePhase) { phase in
+            // If the phase is inactive, then save the data
+            if phase == .inactive { saveAction() }
+        }
     }
 }
 
 struct ScrumsView_Previews: PreviewProvider {
     static var previews: some View {
-        ScrumsView(scrums: .constant(DailyScrum.sampleData))
+        ScrumsView(scrums: .constant(DailyScrum.sampleData), saveAction: { })
     }
 }
