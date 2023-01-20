@@ -25,6 +25,26 @@ class ScrumStore: ObservableObject {
         
     }
     
+    // MARK: - Load Scrums Asynchronously
+    static func load() async throws -> [DailyScrum] {
+        
+        // Suspends the load function, then passes the continuation into a provided closure
+        try await withCheckedThrowingContinuation({ continuation in
+            // Call the legacy load reference
+            load { result in
+                // Switch on the two types of results returned
+                switch result {
+                case .failure(let error):
+                    // Send the error to the continuation closure
+                    continuation.resume(throwing: error)
+                    
+                case .success(let scrums):
+                    continuation.resume(returning: scrums)
+                }
+            }
+        })
+    }
+    
     // MARK: - Load Scrum Data
     /// Loads the JSON data into the scrums array.
     static func load(completion: @escaping (Result<[DailyScrum], Error>) -> Void) {
@@ -57,6 +77,24 @@ class ScrumStore: ObservableObject {
     }
     
     // MARK: - Save Scrums
+    ///New Async/ Await pattern to save the data.
+    @discardableResult // Removes the warning about not using the returned value
+    static func save(scrums: [DailyScrum]) async throws ->  Int {
+        // Asnychronously call the legacy method
+        try await withCheckedThrowingContinuation({ continuation in
+            // Calls the legacy method with the following completion handler
+            save(scrums: scrums) { result in
+                switch result {
+                    // Assigns the returned Integer from the returning function to here
+                case .success(let scrumsSaved):
+                    continuation.resume(returning: scrumsSaved)
+                case .failure(let errorMessage):
+                    continuation.resume(throwing: errorMessage)
+                }
+            }
+        })
+    }
+    
     /// Method accepts a completion with the number of saved scrums or an error.
     static func save(scrums: [DailyScrum], completion: @escaping (Result<Int, Error>)->Void) {
         // Handle any encoding errors

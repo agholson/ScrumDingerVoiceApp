@@ -1,7 +1,7 @@
 #  Scrum Dinger Voice App  
 App keeps track of daily scrums, based on the tutorial by Apple: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
 
-Here as of 1/15/23: https://developer.apple.com/tutorials/app-dev-training/persisting-data
+Here as of 1/15/23: https://developer.apple.com/tutorials/app-dev-training/handling-errors
 
 
 # Play Custom Audio in App 
@@ -119,6 +119,67 @@ class ScrumStore: ObservableObject {
         } catch {
             DispatchQueue.main.async {
                 // Catch the error
+                completion(.failure(error))
+            }
+        }
+    }
+}
+```
+
+# Swift 5.5 Async/ Await - Concurrency   
+Swift 5.5 introduced new async/ await pattern to more easily call asynchronous code instead of the use of a call-back function
+as shown above. 
+
+See the tutorial here for more details: https://developer.apple.com/tutorials/app-dev-training/adopting-swift-concurrency.
+
+However, you can go further, by encapsulating legacy closure-based code with the new async/ await pattern as detailed here:
+https://developer.apple.com/tutorials/app-dev-training/modernizing-asynchronous-code
+
+```
+static func load() async throws -> [DailyScrum] {
+    
+    // Suspends the load function, then passes the continuation into a provided closure
+    try await withCheckedThrowingContinuation({ continuation in
+        // Call the legacy load reference
+        load { result in
+            // Switch on the two types of results returned
+            switch result {
+            case .failure(let error):
+                // Send the error to the continuation closure
+                continuation.resume(throwing: error)
+                
+            case .success(let scrums):
+                continuation.resume(returning: scrums)
+            }
+        }
+    })
+}
+
+// MARK: - Load Scrum Data
+/// Loads the JSON data into the scrums array.
+static func load(completion: @escaping (Result<[DailyScrum], Error>) -> Void) {
+    // Loads data with the least priority
+    DispatchQueue.global(qos: .background).async {
+        do {
+            let fileURL = try fileURL()
+            // Try creating a file handler for the JSON
+            guard let file = try? FileHandle(forReadingFrom: fileURL) else {
+                DispatchQueue.main.async {
+                    // If the file does not exist yet, then return an empty array
+                    completion(.success([]))
+                }
+                return
+            }
+            
+            // Try decoding the JSON into a local array
+            let dailyScrums = try JSONDecoder().decode([DailyScrum].self, from: file.availableData)
+            
+            // Return a completion handler on the main thread that updates the daily scrums
+            completion(.success(dailyScrums))
+            
+        } catch  {
+            DispatchQueue.main.async {
+                // Returns a completion handler with an error here
                 completion(.failure(error))
             }
         }
