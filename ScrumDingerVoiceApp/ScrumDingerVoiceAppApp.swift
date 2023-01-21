@@ -12,6 +12,9 @@ struct ScrumDingerVoiceAppApp: App {
     
     @StateObject private var store = ScrumStore()
     
+    // Optionally tracks any errors
+    @State private var errorWrapper: ErrorWrapper?
+    
     // Used for sample data
 //    @State private var scrums = DailyScrum.sampleData
     var body: some Scene {
@@ -23,7 +26,9 @@ struct ScrumDingerVoiceAppApp: App {
                             try await ScrumStore.save(scrums: store.scrums)
                         }
                         catch {
-                            fatalError("Error saving scrums.")
+                            // Assign the state property the custom error
+                            errorWrapper = ErrorWrapper(error: error, guidance: "Try again later.")
+                            
                         }
                     }
                 })
@@ -37,17 +42,29 @@ struct ScrumDingerVoiceAppApp: App {
 //                        }
 //                    }
 //                })
-            } // MARK: Load Old Data Upon Appearance
+            }
+            // MARK: Load Old Data Upon Appearance
             .task {
                 do {
                     // Load the previous scrums
                     store.scrums = try await ScrumStore.load()
                 }
                 catch {
-                    fatalError("Failed to load the previous scrums. Full error: \(error)")
+                    errorWrapper = ErrorWrapper(error: error, guidance: "ScrumDinger will load sample data, then continue.")
                 }
                 
             }
+            // MARK: Display Error View
+            .sheet(item: $errorWrapper) {
+                DispatchQueue.main.async {
+                    // On dismiss for the load failure, load sample data for the scrums
+                    store.scrums = DailyScrum.sampleData
+                }
+            } content: { errorWrapped in
+                // Display the error view
+                ErrorView(error: errorWrapped)
+            }
+
 //            .onAppear {
 //                // Load the JSON from the file on appear
 //                ScrumStore.load { result in

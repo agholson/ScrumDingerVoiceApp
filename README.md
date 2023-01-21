@@ -1,7 +1,7 @@
 #  Scrum Dinger Voice App  
 App keeps track of daily scrums, based on the tutorial by Apple: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
 
-Here as of 1/15/23: https://developer.apple.com/tutorials/app-dev-training/handling-errors
+Here as of 1/21/23: https://developer.apple.com/tutorials/app-dev-training/drawing-the-timer-view
 
 
 # Play Custom Audio in App 
@@ -187,4 +187,17 @@ static func load(completion: @escaping (Result<[DailyScrum], Error>) -> Void) {
 }
 ```
 
+# Accessing App's Sandbox to Produce an Error
+Each app upon installation gets loaded into its own sandbox. You can access the sandbox with the help of your 
+product identifier found under the build instruction that looks like `yourName.ScrumDingerVoiceApp`. Note this value,
+then launch a terminal window and run:
+```
+xcrun simctl get_app_container booted com.example.apple-samplecode.Scrumdinger data
+```
+Copy the path it produces, then use it to open a new Finder window at that location:
+```
+open -a Finder pastedPath
+```
+From here, open the data under the `Documents` folder, and delete one of the IDs in order to intentionally corrupt
+the data. 
 

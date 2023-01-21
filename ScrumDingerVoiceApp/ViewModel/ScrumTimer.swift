@@ -27,12 +27,12 @@ class ScrumTimer: ObservableObject {
     @Published var secondsRemaining = 0
     /// All meeting attendees, listed in the order they will speak.
     private(set) var speakers: [Speaker] = []
-
+    
     /// The scrum meeting length.
     private(set) var lengthInMinutes: Int
     /// A closure that is executed when a new attendee begins speaking.
     var speakerChangedAction: (() -> Void)?
-
+    
     private var timer: Timer?
     private var timerStopped = false
     private var frequency: TimeInterval { 1.0 / 60.0 }
@@ -52,8 +52,8 @@ class ScrumTimer: ObservableObject {
      Use `startScrum()` to start the timer.
      
      - Parameters:
-        - lengthInMinutes: The meeting length.
-        -  attendees: A list of attendees for the meeting.
+     - lengthInMinutes: The meeting length.
+     -  attendees: A list of attendees for the meeting.
      */
     init(lengthInMinutes: Int = 0, attendees: [DailyScrum.Attendee] = []) {
         self.lengthInMinutes = lengthInMinutes
@@ -78,20 +78,35 @@ class ScrumTimer: ObservableObject {
     func skipSpeaker() {
         changeToSpeaker(at: speakerIndex + 1)
     }
-
+    
+    //This function changes the speaker at the given index.
+    /// Changes the active speaker to the speaker at the given index. It also updates the seconds elapsed and remaining for the current speaker,
+    /// sets the start date for a timer, and schedules the timer to call the update function with the number of seconds elapsed as its argument, at a given frequency. It
+    /// also checks if the previous speaker has completed speaking and sets the 'isCompleted' property to true.
     private func changeToSpeaker(at index: Int) {
+        //If the index is greater than 0, it sets the previous speaker's 'isCompleted' property to true.
         if index > 0 {
             let previousSpeakerIndex = index - 1
             speakers[previousSpeakerIndex].isCompleted = true
         }
+        
         secondsElapsedForSpeaker = 0
+        
+        //guard statement to check if index is less than the number of speakers. If not, it returns.
         guard index < speakers.count else { return }
+        
+        //Sets the current speaker index and active speaker
         speakerIndex = index
         activeSpeaker = speakerText
-
+        
+        //Calculates the seconds elapsed and remaining for the current speaker
         secondsElapsed = index * secondsPerSpeaker
         secondsRemaining = lengthInSeconds - secondsElapsed
+        
+        //Sets the start date for the timer
         startDate = Date()
+        
+        //Schedules a timer that updates the seconds elapsed and calls the update function with the seconds elapsed as its argument
         timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true) { [weak self] timer in
             if let self = self, let startDate = self.startDate {
                 let secondsElapsed = Date().timeIntervalSince1970 - startDate.timeIntervalSince1970
@@ -99,7 +114,7 @@ class ScrumTimer: ObservableObject {
             }
         }
     }
-
+    
     private func update(secondsElapsed: Int) {
         secondsElapsedForSpeaker = secondsElapsed
         self.secondsElapsed = secondsPerSpeaker * speakerIndex + secondsElapsedForSpeaker
@@ -107,9 +122,9 @@ class ScrumTimer: ObservableObject {
             return
         }
         secondsRemaining = max(lengthInSeconds - self.secondsElapsed, 0)
-
+        
         guard !timerStopped else { return }
-
+        
         if secondsElapsedForSpeaker >= secondsPerSpeaker {
             changeToSpeaker(at: speakerIndex + 1)
             speakerChangedAction?()
@@ -120,8 +135,8 @@ class ScrumTimer: ObservableObject {
      Reset the timer with a new meeting length and new attendees.
      
      - Parameters:
-         - lengthInMinutes: The meeting length.
-         - attendees: The name of each attendee.
+     - lengthInMinutes: The meeting length.
+     - attendees: The name of each attendee.
      */
     func reset(lengthInMinutes: Int, attendees: [DailyScrum.Attendee]) {
         self.lengthInMinutes = lengthInMinutes
