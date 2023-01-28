@@ -15,6 +15,11 @@ struct MeetingView: View {
     /// Keeps this object alive for the life cycle of this view
     @StateObject var scrumTimer = ScrumTimer()
     
+    // Asks user's permission the first time this is called
+    @StateObject var speechRecognizer = SpeechRecognizer()
+    
+    @State private var isRecording = false // Displays recording indicators
+    
     /// Used for the next person's sound
     private var player: AVPlayer { AVPlayer.sharedDingPlayer }
     
@@ -32,7 +37,7 @@ struct MeetingView: View {
                 MeetingHeaderView(secondsElapsed: scrumTimer.secondsElapsed, secondsRemaining: scrumTimer.secondsRemaining, theme: scrum.theme)
                 
                 // MARK: - Circle
-                MeetingTimerView(speakers: scrumTimer.speakers, theme: scrum.theme)
+                MeetingTimerView(speakers: scrumTimer.speakers, isRecording: isRecording, theme: scrum.theme)
                 
                 // MARK: - Footer
                 MeetingFooterView(speakers: scrumTimer.speakers, skipAction: scrumTimer.skipSpeaker)
@@ -54,7 +59,10 @@ struct MeetingView: View {
                 // Then play the audio file
                 player.play()
             }
-            
+            // MARK: Start Speech Recognition
+            speechRecognizer.reset() // Ensures it is ready to record
+            speechRecognizer.transcribe() // Starts audio transcription
+            isRecording = true // Now we tell that we're recording
             // Start the timer
             scrumTimer.startScrum()
             
@@ -62,8 +70,13 @@ struct MeetingView: View {
         .onDisappear(perform: {
             // Stop the timer
             scrumTimer.stopScrum()
+            
+            // MARK: Stop Meeting Transcription
+            speechRecognizer.stopTranscribing()
+            isRecording = false // No longer recording
+            
             // MARK: Save Meeting info to History
-            let newHistory = History(attendees: scrum.attendees, lengthInMinutes: scrum.timer.secondsElapsed / 60)
+            let newHistory = History(attendees: scrum.attendees, lengthInMinutes: scrum.timer.secondsElapsed / 60, transcript: speechRecognizer.transcript) // Saves transcript as well
             scrum.history.insert(newHistory, at: 0) // Appends to the first element in the list
         })
         .navigationBarTitleDisplayMode(.inline)

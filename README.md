@@ -1,7 +1,7 @@
 #  Scrum Dinger Voice App  
 App keeps track of daily scrums, based on the tutorial by Apple: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
 
-Here as of 1/21/23: https://developer.apple.com/tutorials/app-dev-training/drawing-the-timer-view
+Here as of 1/21/23: https://developer.apple.com/tutorials/app-dev-training/transcribing-speech-to-text
 
 
 # Play Custom Audio in App 
@@ -200,4 +200,12 @@ open -a Finder pastedPath
 ```
 From here, open the data under the `Documents` folder, and delete one of the IDs in order to intentionally corrupt
 the data. 
+
+# Transcribing Meetings
+In order to access the device's microphone, you must ask the user for permission. This tutorial details 
+how to accomplish this: https://developer.apple.com/tutorials/app-dev-training/transcribing-speech-to-text. 
+
+![Describes the permissions to setup](img/speechPermissions.jpeg)
+
+
 

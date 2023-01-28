@@ -58,11 +58,18 @@ struct DetailView: View {
                 }
                 // Else, then loop through the history of the meetings
                 ForEach(scrum.history) { history in
-                    HStack {
-                        Image(systemName: "calendar")
-                        // Converts the date to the localized date/ time e.g. September 23, 2021
-                        Text(history.date, style: .date)
+                    NavigationLink {
+                        HistoryView(history: history)
+                    } label: {
+                        HStack {
+                            Image(systemName: "calendar")
+                            // Converts the date to the localized date/ time e.g. September 23, 2021
+                            Text(history.date, style: .date)
+                        }
                     }
+
+                    
+                   
                 }
             }
         }

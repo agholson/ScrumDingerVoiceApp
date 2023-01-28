@@ -10,6 +10,7 @@ import SwiftUI
 struct MeetingTimerView: View {
     
     let speakers: [ScrumTimer.Speaker]
+    let isRecording: Bool // Tracks whether/ not a transcription happens
     let theme: Theme
     
     private var currentSpeaker: String {
@@ -24,6 +25,12 @@ struct MeetingTimerView: View {
                         Text(currentSpeaker)
                             .font(.title)
                         Text("is speaking")
+                        // Show a recording/ not recording icon depending on the value supplied
+                        Image(systemName: isRecording ? "mic" : "mic.slash")
+                            .font(.title) // The system treats SF Symbols like fonts, so you can use the .font modifier to apply different font weights to these symbols
+                            .padding(.top)
+                            .accessibilityLabel(isRecording ? "with transcription" : "without transcription")
+                        
                     } // Makes the VoiceOver read the two Texts above as one sentence
                     .accessibilityElement(children: .combine)
                     .foregroundStyle(theme.accentColor) // Makes the text the theme's color 
@@ -49,6 +56,6 @@ struct MeetingTimerView_Previews: PreviewProvider {
         [ScrumTimer.Speaker(name: "Bill", isCompleted: true), ScrumTimer.Speaker(name: "Cathy", isCompleted: false)]
     }
     static var previews: some View {
-        MeetingTimerView(speakers: speakers, theme: .bubblegum)
+        MeetingTimerView(speakers: speakers, isRecording: true, theme: .bubblegum)
     }
 }

@@ -17,7 +17,7 @@ struct MeetingHeaderView: View {
         Double(secondsElapsed + secondsRemaining)
     }
     
-    /// Displays the progress made through the hour meeting
+    /// Displays the progress made through the meeting
     private var progress: Double {
         guard totalSeconds > 0 else { return 1 }
         return Double(secondsElapsed) / Double(totalSeconds)
@@ -29,6 +29,7 @@ struct MeetingHeaderView: View {
     
     var body: some View {
         VStack {
+            // Creates the line at the top
             ProgressView(value: progress)
             
             HStack {
