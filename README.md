@@ -188,6 +188,7 @@ static func load(completion: @escaping (Result<[DailyScrum], Error>) -> Void) {
 ```
 
 # Accessing App's Sandbox to Produce an Error
+https://developer.apple.com/tutorials/app-dev-training/handling-errors
 Each app upon installation gets loaded into its own sandbox. You can access the sandbox with the help of your 
 product identifier found under the build instruction that looks like `yourName.ScrumDingerVoiceApp`. Note this value,
 then launch a terminal window and run:
@@ -200,6 +201,9 @@ open -a Finder pastedPath
 ```
 From here, open the data under the `Documents` folder, and delete one of the IDs in order to intentionally corrupt
 the data. 
+
+App produces the following error:
+![Error screen](handledErrorScreen.png)
 
 # Transcribing Meetings
 In order to access the device's microphone, you must ask the user for permission. This tutorial details 

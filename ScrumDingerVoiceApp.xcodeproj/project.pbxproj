@@ -39,6 +39,7 @@
 		751DC2A4295A8A3F0084A75A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		751DC2A5295A8C730084A75A /* DetailEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailEditView.swift; sourceTree = "<group>"; };
 		753D651C295A05DB00C2DA3D /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		7558E78329992711004DB30A /* handledErrorScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = handledErrorScreen.png; sourceTree = "<group>"; };
 		7560CE812961EDFB00E47FF1 /* ThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeView.swift; sourceTree = "<group>"; };
 		7560CE842961F75F00E47FF1 /* ThemePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePicker.swift; sourceTree = "<group>"; };
 		7560CE8629621E7100E47FF1 /* MeetingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingHeaderView.swift; sourceTree = "<group>"; };
@@ -130,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				756C9BFC297EABD00049F0F5 /* speechPermissions.jpeg */,
+				7558E78329992711004DB30A /* handledErrorScreen.png */,
 			);
 			path = img;
 			sourceTree = "<group>";
